@@ -1013,6 +1013,7 @@ class Section(BaseObject):
                  manageable_by=None,
                  name=None,
                  outdated=None,
+                 parent_section_id=None,
                  position=None,
                  sorting=None,
                  source_locale=None,
@@ -1059,7 +1060,7 @@ class Section(BaseObject):
         # Type: string
         self.locale = locale
 
-        # Comment: The set of users who can manage this section
+        # Comment: Deprecated. The set of users who can manage this section
         # Mandatory: no
         # Read-only: no
         # Type: string
@@ -1076,6 +1077,12 @@ class Section(BaseObject):
         # Read-only: yes
         # Type: boolean
         self.outdated = outdated
+
+        # Comment: The id of the section to which this section belongs. Only writable for Guide Enterprise customers
+        # Mandatory: no
+        # Read-only: no
+        # Type: integer
+        self.parent_section_id = parent_section_id
 
         # Comment: The position of this section in the section list. By default the section is added to the end of the list
         # Mandatory: no
@@ -1102,7 +1109,7 @@ class Section(BaseObject):
         # Type: string
         self.url = url
 
-        # Comment: The id of the user segment to which this section belongs
+        # Comment: Deprecated. The id of the user segment to which this section belongs.
         # Mandatory: no
         # Read-only: no
         # Type: integer
@@ -1146,6 +1153,20 @@ class Section(BaseObject):
             self.created_at = created
 
     @property
+    def parent_section(self):
+        """
+        |  Comment: The id of the section to which this section belongs. Only writable for Guide Enterprise customers
+        """
+        if self.api and self.parent_section_id:
+            return self.api._get_parent_section(self.parent_section_id)
+
+    @parent_section.setter
+    def parent_section(self, parent_section):
+        if parent_section:
+            self.parent_section_id = parent_section.id
+            self._parent_section = parent_section
+
+    @property
     def updated(self):
         """
         |  Comment: The time at which the section was last updated
@@ -1161,7 +1182,7 @@ class Section(BaseObject):
     @property
     def user_segment(self):
         """
-        |  Comment: The id of the user segment to which this section belongs
+        |  Comment: Deprecated. The id of the user segment to which this section belongs.
         """
         if self.api and self.user_segment_id:
             return self.api._get_user_segment(self.user_segment_id)
@@ -1610,6 +1631,7 @@ class UserSegment(BaseObject):
                  group_ids=None,
                  id=None,
                  name=None,
+                 or_tags=None,
                  organization_ids=None,
                  tags=None,
                  updated_at=None,
@@ -1648,13 +1670,19 @@ class UserSegment(BaseObject):
         # Type: string
         self.name = name
 
+        # Comment: A user must have at least one tag in the list to have access
+        # Mandatory: no
+        # Read-only: no
+        # Type: array
+        self.or_tags = or_tags
+
         # Comment: The ids of the organizations that have access
         # Mandatory: no
         # Read-only: no
         # Type: array
         self.organization_ids = organization_ids
 
-        # Comment: The tags a user must have to have access
+        # Comment: All the tags a user must have to have access
         # Mandatory: no
         # Read-only: no
         # Type: array

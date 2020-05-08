@@ -3230,6 +3230,12 @@
         "mandatory": "no",
         "comment": "Whether the section is out of date"
       },
+      "parent_section_id": {
+        "type": "integer",
+        "read-only": "no",
+        "mandatory": "no",
+        "comment": "The id of the section to which this section belongs. Only writable for Guide Enterprise customers"
+      },
       "position": {
         "type": "integer",
         "read-only": "no",
@@ -3240,13 +3246,13 @@
         "type": "string",
         "read-only": "no",
         "mandatory": "no",
-        "comment": "The set of users who can manage this section"
+        "comment": "Deprecated. The set of users who can manage this section"
       },
       "user_segment_id": {
         "type": "integer",
         "read-only": "no",
         "mandatory": "no",
-        "comment": "The id of the user segment to which this section belongs"
+        "comment": "Deprecated. The id of the user segment to which this section belongs."
       },
       "created_at": {
         "type": "timestamp",
@@ -4030,7 +4036,13 @@
         "type": "array",
         "read-only": "no",
         "mandatory": "no",
-        "comment": "The tags a user must have to have access"
+        "comment": "All the tags a user must have to have access"
+      },
+      "or_tags": {
+        "type": "array",
+        "read-only": "no",
+        "mandatory": "no",
+        "comment": "A user must have at least one tag in the list to have access"
       },
       "created_at": {
         "type": "timestamp",
