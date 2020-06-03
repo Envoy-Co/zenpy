@@ -265,13 +265,13 @@ class JobStatusesResponseHandler(GenericZendeskResponseHandler):
             return False
 
     def build(self, response):
-        response_objects = {'job_statuses': []}
+        response_objects = []
         for object_json in response.json()['job_statuses']:
             zenpy_object = self.object_mapping.object_from_json(
                 'job_status',
                 object_json
             )
-            response_objects['job_statuses'].append(zenpy_object)
+            response_objects.append(zenpy_object)
         return response_objects
 
 
